@@ -1,6 +1,6 @@
 # VANTA/9 Interactive Replica
 
-A scene-by-scene interactive web reconstruction of the supplied 15-second interface video.
+A self-contained Three.js reconstruction of the futuristic operator, loadout, weapon-inspection, phase-module, synchronization, ready, and deploy sequence.
 
 ## Run locally
 
@@ -12,17 +12,22 @@ Open `http://localhost:4173`.
 
 ## Controls
 
-- Exact Playback is the pixel-faithful source sequence rendered through a Three.js WebGL surface.
-- Enter Interactive switches to clickable scene states.
-- Arrow Left/Right changes interactive scenes.
+- **Cinematic Replica** automatically plays the reconstructed sequence.
+- **Enter Interactive** enables clickable scene controls.
+- Left and right arrow keys change scenes in interactive mode.
 - `I` opens interactive mode; `C` returns to cinematic mode.
-- Sound, play/pause, timeline scrubbing, module selection, and deploy controls are functional.
+- The timeline supports play, pause, and scrubbing.
+- Operator selection, gear confirmation, weapon equip, module selection, synchronization, and deploy controls are functional.
 
 ## Implementation
 
-- Three.js WebGL shader surface
-- Exact reference playback
-- Extracted key-state textures
-- Custom lime scan/wipe transition shader
-- Responsive 16:9 composition
+- Three.js WebGL rendering
+- Runtime-generated 1280×720 interface textures
+- Custom lime scan/wipe shader transitions
+- Responsive 16:9 presentation
 - DOM interaction hotspots and accessible labels
+- No build step or binary assets required
+
+## Source-video edition
+
+The separately delivered project archive includes the supplied reference MP4 and extracted interface-state assets. This GitHub edition is intentionally self-contained so it can be cloned and run immediately from static hosting.
