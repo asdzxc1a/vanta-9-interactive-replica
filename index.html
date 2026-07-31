@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#08090a" />
+    <title>VANTA/9 — Interactive Loadout</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <main id="app" aria-label="VANTA/9 interactive loadout interface">
+      <div id="viewport" role="application" aria-label="Interactive cinematic interface">
+        <video id="fallbackVideo" class="fallback-video" autoplay muted playsinline preload="auto"></video>
+        <canvas id="webgl"></canvas>
+        <div class="grain" aria-hidden="true"></div>
+        <div class="transition-flash" aria-hidden="true"></div>
+
+        <button class="mode-pill" id="modeButton" type="button" aria-label="Switch between exact cinematic playback and interactive mode">
+          <span class="status-dot"></span>
+          <span id="modeLabel">EXACT PLAYBACK</span>
+        </button>
+
+        <button class="sound-button" id="soundButton" type="button" aria-label="Toggle sound">SOUND OFF</button>
+
+        <div id="cinematicControls" class="cinematic-controls">
+          <button id="playPause" type="button">PAUSE</button>
+          <div class="timeline" id="timeline" role="slider" aria-label="Video progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div class="timeline-fill" id="timelineFill"></div>
+          </div>
+          <span id="timecode">00:00 / 00:15</span>
+          <button id="enterInteractive" type="button">ENTER INTERACTIVE</button>
+        </div>
+
+        <div id="interactiveLayer" class="interactive-layer" aria-hidden="true">
+          <button class="hotspot operator-select" data-target="gear" aria-label="Select Kira Venn and open gear"></button>
+          <button class="hotspot gear-confirm" data-target="weapon" aria-label="Confirm gear and inspect Arc Spear 07"></button>
+          <button class="hotspot weapon-equip" data-target="modules" aria-label="Equip Arc Spear 07 and open phase modules"></button>
+          <button class="hotspot module-blink" data-action="blink" aria-label="Select Blink phase module"></button>
+          <button class="hotspot module-echo" data-action="echo" aria-label="Select Echo phase module"></button>
+          <button class="hotspot module-break" data-action="break" aria-label="Select Break phase module"></button>
+          <button class="hotspot module-confirm" data-target="sync" aria-label="Confirm phase module"></button>
+          <button class="hotspot sync-continue" data-target="ready" aria-label="Continue to ready screen"></button>
+          <button class="hotspot deploy-button" data-target="deploy" aria-label="Deploy"></button>
+
+          <nav class="scene-dots" aria-label="Replica scenes">
+            <button data-scene="operator"><span>01</span> OPERATOR</button>
+            <button data-scene="gear"><span>02</span> LOADOUT</button>
+            <button data-scene="weapon"><span>03</span> WEAPON</button>
+            <button data-scene="modules"><span>04</span> MODULES</button>
+            <button data-scene="ready"><span>05</span> READY</button>
+          </nav>
+          <div class="interaction-note" id="interactionNote">CLICK THE HIGHLIGHTED CONTROL TO CONTINUE</div>
+        </div>
+
+        <div class="boot" id="boot">
+          <div class="boot-mark">VANTA/9</div>
+          <div class="boot-line"><span></span></div>
+          <div class="boot-copy">INITIALIZING REPLICA</div>
+        </div>
+      </div>
+    </main>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
