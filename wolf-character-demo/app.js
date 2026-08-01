@@ -1,0 +1,21 @@
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.166.1/build/three.module.js';
+const mount=document.querySelector('#v');
+const loading=document.querySelector('#loading');
+const fallback=document.querySelector('#fallback');
+fallback.src=globalThis.__WOLF;
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x070b23);
+const camera=new THREE.PerspectiveCamera(28,innerWidth/innerHeight,.1,20);camera.position.z=5.8;
+const renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);renderer.outputColorSpace=THREE.SRGBColorSpace;mount.appendChild(renderer.domElement);
+const texture=await new THREE.TextureLoader().loadAsync(globalThis.__WOLF);texture.colorSpace=THREE.SRGBColorSpace;
+const mesh=new THREE.Mesh(new THREE.PlaneGeometry(2,3,64,96),new THREE.MeshBasicMaterial({map:texture,side:THREE.DoubleSide}));scene.add(mesh);loading.remove();
+let tx=0,ty=0,x=0,y=0,zoom=1,targetZoom=1,down=false,sx=0,sy=0,bx=0,by=0;
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function pointer(e){tx=clamp(e.clientX/innerWidth*2-1,-1,1);ty=clamp(-(e.clientY/innerHeight*2-1),-1,1)}
+mount.onpointerdown=e=>{down=true;sx=e.clientX;sy=e.clientY;bx=tx;by=ty;mount.classList.add('dragging');mount.setPointerCapture?.(e.pointerId)};
+mount.onpointermove=e=>{if(down){tx=clamp(bx+(e.clientX-sx)/innerWidth*3,-1,1);ty=clamp(by-(e.clientY-sy)/innerHeight*3,-1,1)}else pointer(e)};
+mount.onpointerup=mount.onpointercancel=e=>{down=false;mount.classList.remove('dragging');mount.releasePointerCapture?.(e.pointerId)};
+mount.onpointerleave=()=>{if(!down)tx=ty=0};
+mount.addEventListener('wheel',e=>{e.preventDefault();targetZoom=clamp(targetZoom*Math.exp(-e.deltaY*.0006),.9,1.22)},{passive:false});
+function reset(){tx=ty=0;targetZoom=1}document.querySelector('#reset').onclick=reset;mount.ondblclick=reset;
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+function animate(t){x+=(tx-x)*.07;y+=(ty-y)*.07;zoom+=(targetZoom-zoom)*.08;mesh.rotation.y=x*.16;mesh.rotation.x=-y*.11;mesh.position.x=x*.05;mesh.position.y=y*.035+Math.sin(t*.0015)*.006;mesh.scale.setScalar(zoom);renderer.render(scene,camera);requestAnimationFrame(animate)}requestAnimationFrame(animate);
